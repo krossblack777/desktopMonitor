@@ -1,5 +1,3 @@
-
-
 import java.io.File;
 
 import javax.swing.JFileChooser;
@@ -30,13 +28,15 @@ public class selectFile {
 
 		JFileChooser chooser = new JFileChooser(str);
 
-
 		int ret = chooser.showOpenDialog(null);
-		if (ret != JFileChooser.APPROVE_OPTION) {
+		if (ret == JFileChooser.APPROVE_OPTION) {
+			return chooser.getSelectedFile();
+		}
+		if (Main.file == null) {
 			System.exit(0);
 		}
 
-		return chooser.getSelectedFile();
+		return Main.file;
 	}
 
 }

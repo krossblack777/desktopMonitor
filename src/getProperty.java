@@ -8,8 +8,6 @@ import java.util.Properties;
 
 public class getProperty {
 
-	private final static String PROP_PATH = "./conf/application.properties";
-
 	private static Properties conf = new Properties();
 
 	public  String getProperty(String prop) {
@@ -17,7 +15,7 @@ public class getProperty {
 		InputStream inputStream;
 		try {
 			inputStream = new FileInputStream(
-					new File(PROP_PATH));
+					new File(Const.APPLICATION_PROP));
 			conf.load(inputStream);
 		} catch (IOException e) {
 			// TODO 自動生成された catch ブロック

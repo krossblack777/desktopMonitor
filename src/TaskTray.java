@@ -1,5 +1,3 @@
-
-
 import java.awt.AWTException;
 import java.awt.Image;
 import java.awt.MenuItem;
@@ -20,15 +18,14 @@ import javax.imageio.ImageIO;
 public class TaskTray {
 
 	getProperty prop = new getProperty();
-	Image image = ImageIO
-			.read(new File(prop.getProperty("TASK_TRAY_ICON")));
+	Image image = ImageIO.read(new File(prop.getProperty("TASK_TRAY_ICON")));
 	final TrayIcon icon = new TrayIcon(image);
-	HashMap<String, String> map = new HashMap<String, String>();
+	static HashMap<String, String> map = new HashMap<String, String>();
 
-
-	public TaskTray(HashMap<String, String> map, File file) throws IOException, AWTException {
-		this.map = map;
-		//バルーン表示時のクリック時orタスクトレイアイコンダブルクリックで
+	public TaskTray(HashMap<String, String> map, File file) throws IOException,
+			AWTException {
+		TaskTray.map = map;
+		// バルーン表示時のクリック時orタスクトレイアイコンダブルクリックで
 		icon.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -37,26 +34,24 @@ public class TaskTray {
 		});
 
 		PopupMenu menu = new PopupMenu();
-		//右クリック時１ 現在時刻のファイルデータを取得し直す
-		MenuItem aItem = new MenuItem("リセット");
-		aItem.addActionListener(new ActionListener() {
+		// 右クリック時１ 現在時刻のファイルデータを取得し直す
+		MenuItem resetItem = new MenuItem("リセット");
+		resetItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				icon.displayMessage("menu example", "the menu was selected",
-						MessageType.ERROR);
+				resetTime();
 			}
 		});
-		//右クリック時2 ファイル選択からやり直し
-		MenuItem bItem = new MenuItem("初期化");
-		aItem.addActionListener(new ActionListener() {
+		// 右クリック時2 ファイル選択からやり直し
+		MenuItem initItem = new MenuItem("監視対象を変更");
+		initItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				icon.displayMessage("menu example", "the menu was selected",
-						MessageType.ERROR);
+				initialize();
 			}
 		});
-		//右クリック時3 終了する
-		MenuItem exitItem = new MenuItem("exit");
+		// 右クリック時3 終了する
+		MenuItem exitItem = new MenuItem("終了");
 		exitItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -64,14 +59,14 @@ public class TaskTray {
 			}
 		});
 
-		menu.add(aItem);
-		menu.add(bItem);
+		menu.add(resetItem);
+		menu.add(initItem);
 		menu.add(exitItem);
 		icon.setPopupMenu(menu);
 
 		SystemTray.getSystemTray().add(icon);
 
-		//指定時間ごとに確認メッセージ
+		// 指定時間ごとに確認メッセージ
 		TimerTask task = new TimerTask() {
 			@Override
 			public void run() {
@@ -84,18 +79,51 @@ public class TaskTray {
 
 	public void checkFile() {
 		getFileInfo gfi = new getFileInfo();
-		HashMap<String,String> currentmap = new HashMap<String,String>();
+		HashMap<String, String> currentmap = new HashMap<String, String>();
+		DateFormat dft = new DateFormat();
 		currentmap = gfi.callgetInfo(Main.file);
 		if (map.get("ddd").equals(currentmap.get("ddd"))) {
-			icon.displayMessage("monitoring file", map.get("aaa"), MessageType.INFO);
+			icon.displayMessage("ファイルを監視中です\n", map.get("aaa") + "\n更新日時 : "
+					+ dft.dateFormat(map.get("ddd")), MessageType.INFO);
 
 		} else {
 			DateFormat df = new DateFormat();
-			icon.displayMessage("file changed", map.get("aaa") + "is changed.\n"
-					+ "started is " + df.dateFormat(Long.parseLong(map.get("ddd"))) + " \n"
-					+ "current is " + df.dateFormat(Long.parseLong(currentmap.get("ddd"))), MessageType.WARNING);
+			icon.displayMessage(
+					"ファイルが変更されました",
+					map.get("aaa") + "\n変更前  : "
+							+ df.dateFormat(map.get("ddd")) + "\n変更後 :  "
+							+ df.dateFormat(currentmap.get("ddd")),
+					MessageType.WARNING);
 		}
 
+	}
+
+	public void initialize() {
+		String temp = TaskTray.map.get("aaa");
+		selectFile sf = new selectFile();
+		Main.file = sf.openFileDialog();
+
+		getFileInfo gfi = new getFileInfo();
+		DateFormat dft = new DateFormat();
+
+		map = gfi.callgetInfo(Main.file);
+
+		if (temp.equals(map.get("aaa"))) {
+			icon.displayMessage("変更無し", "ファイル名:" + map.get("aaa") + "\n更新日時 : "
+					+ dft.dateFormat(map.get("ddd")), MessageType.INFO);
+
+		} else {
+			icon.displayMessage("ファイル変更", "ファイル名:" + map.get("aaa") + "\n更新日時 : "
+					+ dft.dateFormat(map.get("ddd")), MessageType.INFO);
+		}
+	}
+
+	public void resetTime() {
+		getFileInfo gfi = new getFileInfo();
+		map = gfi.callgetInfo(Main.file);
+		DateFormat dft = new DateFormat();
+		icon.displayMessage("リセット", "更新日時" + dft.dateFormat(map.get("ddd")),
+				MessageType.INFO);
 	}
 
 }
