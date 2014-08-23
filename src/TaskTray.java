@@ -34,7 +34,22 @@ public class TaskTray {
 		});
 
 		PopupMenu menu = new PopupMenu();
-		// 右クリック時１ 現在時刻のファイルデータを取得し直す
+		// 右クリック時1 対象ファイルリを開く
+		MenuItem openDir = new MenuItem("開く");
+
+		openDir.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					openDir();
+				} catch (IOException e1) {
+					// TODO 自動生成された catch ブロック
+					e1.printStackTrace();
+				}
+			}
+		});
+
+		// 右クリック時2 現在時刻のファイルデータを取得し直す
 		MenuItem resetItem = new MenuItem("リセット");
 		resetItem.addActionListener(new ActionListener() {
 			@Override
@@ -42,7 +57,7 @@ public class TaskTray {
 				resetTime();
 			}
 		});
-		// 右クリック時2 ファイル選択からやり直し
+		// 右クリック時3 ファイル選択からやり直し
 		MenuItem initItem = new MenuItem("監視対象を変更");
 		initItem.addActionListener(new ActionListener() {
 			@Override
@@ -50,7 +65,7 @@ public class TaskTray {
 				initialize();
 			}
 		});
-		// 右クリック時3 終了する
+		// 右クリック時4 終了する
 		MenuItem exitItem = new MenuItem("終了");
 		exitItem.addActionListener(new ActionListener() {
 			@Override
@@ -59,6 +74,7 @@ public class TaskTray {
 			}
 		});
 
+		menu.add(openDir);
 		menu.add(resetItem);
 		menu.add(initItem);
 		menu.add(exitItem);
@@ -126,4 +142,10 @@ public class TaskTray {
 				MessageType.INFO);
 	}
 
+	public void openDir() throws IOException {
+		getFileInfo gfi = new getFileInfo();
+		map = gfi.callgetInfo(Main.file);
+		execCommand ec = new execCommand();
+		ec.exec(map.get("aaa"));
+	}
 }
