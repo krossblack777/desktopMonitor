@@ -3,6 +3,7 @@
 import java.awt.AWTException;
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 import java.util.HashMap;
 
 public class Main {
@@ -14,7 +15,7 @@ public class Main {
 		 file = sf.openFileDialog();
 
 		getFileInfo gfi = new getFileInfo();
-		HashMap<String,String> map = new HashMap<String,String>();
+		Map<String,String> map = new HashMap<String,String>();
 		map = gfi.callgetInfo(file);
 		try {
 			TaskTray tray = new TaskTray(map, file);

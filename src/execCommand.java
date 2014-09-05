@@ -1,10 +1,11 @@
 import java.io.IOException;
+import java.util.List;
 import java.util.ArrayList;
 
 public class execCommand {
 	public int exec(String filepath) throws IOException {
 
-		ArrayList<String> cmd = new ArrayList<String>();
+		List<String> cmd = new ArrayList<String>();
 		String osname = System.getProperty("os.name");
 		if (osname.indexOf("Windows") >= 0) {
 			cmd.add("cmd");

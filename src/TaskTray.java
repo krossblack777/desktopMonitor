@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -20,9 +21,9 @@ public class TaskTray {
 	getProperty prop = new getProperty();
 	Image image = ImageIO.read(new File(prop.getProperty("TASK_TRAY_ICON")));
 	final TrayIcon icon = new TrayIcon(image);
-	static HashMap<String, String> map = new HashMap<String, String>();
+	static Map<String, String> map = new HashMap<String, String>();
 
-	public TaskTray(HashMap<String, String> map, File file) throws IOException,
+	public TaskTray(Map<String, String> map, File file) throws IOException,
 			AWTException {
 		TaskTray.map = map;
 		// バルーン表示時のクリック時orタスクトレイアイコンダブルクリックで
@@ -95,7 +96,7 @@ public class TaskTray {
 
 	public void checkFile() {
 		getFileInfo gfi = new getFileInfo();
-		HashMap<String, String> currentmap = new HashMap<String, String>();
+		Map<String, String> currentmap = new HashMap<String, String>();
 		DateFormat dft = new DateFormat();
 		currentmap = gfi.callgetInfo(Main.file);
 		if (map.get("ddd").equals(currentmap.get("ddd"))) {

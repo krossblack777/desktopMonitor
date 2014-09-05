@@ -1,12 +1,13 @@
 
 
 import java.io.File;
+import java.util.Map;
 import java.util.HashMap;
 
 public class getFileInfo {
 
-	public HashMap<String, String> callgetInfo(File file) {
-		HashMap<String, String> map = new HashMap<String, String>();
+	public Map<String, String> callgetInfo(File file) {
+		Map<String, String> map = new HashMap<String, String>();
 		if (!file.exists()) {
 			System.exit(1);
 		}
@@ -15,9 +16,9 @@ public class getFileInfo {
 
 	}
 
-	private static HashMap<String, String> getInfo(File file) {
+	private static Map<String, String> getInfo(File file) {
 
-		HashMap<String, String> map = new HashMap<String, String>();
+		Map<String, String> map = new HashMap<String, String>();
 		map.put("aaa", file.getAbsolutePath());
 		map.put("bbb", file.getPath());
 		map.put("ccc", file.getName());
