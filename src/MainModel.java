@@ -69,8 +69,13 @@ public class MainModel {
 	}
 
 	public void settingFile(String text) {
-		selectFile sf = new selectFile();
-		Main.file = sf.openFileDialog(text);
+		FileChooserView fileView = new FileChooserView();
+		try {
+			Main.file = fileView.openFileDialog(text);
+		} catch (Exception e1) {
+			// TODO 自動生成された catch ブロック
+			e1.printStackTrace();
+		}
 		getFileInfo gfi = new getFileInfo();
 		map = gfi.callgetInfo(Main.file);
 		if (initFlg) {
