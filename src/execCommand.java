@@ -1,9 +1,11 @@
+
+
 import java.io.IOException;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 public class execCommand {
-	public int exec(String filepath) throws IOException {
+	public int exec(String filepath) {
 
 		List<String> cmd = new ArrayList<String>();
 		String osname = System.getProperty("os.name");
@@ -27,12 +29,14 @@ public class execCommand {
 		cmd.add(filepath);
 
 		ProcessBuilder pb = new ProcessBuilder(cmd);
-		Process p = pb.start();
-
+		Process p;
 		try {
+			p = pb.start();
 			p.waitFor();
-		} catch (InterruptedException e) {
+		} catch (IOException e1) {
 			// TODO 自動生成された catch ブロック
+			e1.printStackTrace();
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		return 0;

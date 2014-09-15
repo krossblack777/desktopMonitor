@@ -1,7 +1,8 @@
 
+
 public class Const {
 	private Const() { }
 
-	public static final String APPLICATION_PROP = "conf/application.properties";
+	public static final String APPLICATION_PROP = "src/conf/application.properties";
 
 }

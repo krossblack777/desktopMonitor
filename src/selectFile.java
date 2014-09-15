@@ -1,3 +1,4 @@
+
 import java.io.File;
 
 import javax.swing.JFileChooser;
@@ -6,7 +7,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 public class selectFile {
 
-	public File openFileDialog() {
+	public File openFileDialog(String directory) {
 		try {
 			UIManager
 					.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
@@ -23,10 +24,17 @@ public class selectFile {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 		}
-		getProperty gp = new getProperty();
-		String str = gp.getProperty("DEFAULT_OPEN_DIALOG");
+		String str = null;
+		if (0 == directory.length()) {
+			getProperty gp = new getProperty();
+			str = gp.getProperty("DEFAULT_OPEN_DIALOG");
+
+		} else {
+			str = directory;
+		}
 
 		JFileChooser chooser = new JFileChooser(str);
+		chooser.setDragEnabled(true);
 
 		int ret = chooser.showOpenDialog(null);
 		if (ret == JFileChooser.APPROVE_OPTION) {

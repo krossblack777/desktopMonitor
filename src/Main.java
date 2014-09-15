@@ -1,33 +1,35 @@
 
 
+
 import java.awt.AWTException;
+import java.awt.SystemTray;
 import java.io.File;
-import java.io.IOException;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Main {
+
+	Map<String, String> map = new HashMap<String, String>();
 	static File file = null;
 
-	public static void main(String [] args) {
+	public static void main(String[] args) throws AWTException {
 
-		selectFile sf = new selectFile();
-		 file = sf.openFileDialog();
+		final MainModel model = new MainModel();
+		final InputFilePathView view = new InputFilePathView();
+		view.setVisible(true);
 
-		getFileInfo gfi = new getFileInfo();
-		Map<String,String> map = new HashMap<String,String>();
-		map = gfi.callgetInfo(file);
-		try {
-			TaskTray tray = new TaskTray(map, file);
+		TimerTask task = new TimerTask() {
 
-		} catch (IOException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		} catch (AWTException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		}
+			@Override
+			public void run() {
+				if (!view.isShowing())
+					model.checkFile();
+			}
+		};
+		Timer timer = new Timer();
+		timer.scheduleAtFixedRate(task, 0, 1 * 60 * 1000);
 
 	}
-
 }
