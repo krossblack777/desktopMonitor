@@ -19,11 +19,10 @@ public class getFileInfo {
 	private static Map<String, String> getInfo(File file) {
 
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("aaa", file.getAbsolutePath());
-		map.put("bbb", file.getPath());
-		map.put("ccc", file.getName());
-		map.put("ddd", String.valueOf(file.lastModified()));
-		map.put("eee", String.valueOf(file.length()));
+		map.put(FileInfoEnum.AbusolutePath.toString(), file.getAbsolutePath());
+		map.put(FileInfoEnum.FileName.toString(), file.getName());
+		map.put(FileInfoEnum.LastModifiedData.toString(), String.valueOf(file.lastModified()));
+		map.put(FileInfoEnum.FileNameSize.toString(), String.valueOf(file.length()));
 		return map;
 	}
 }

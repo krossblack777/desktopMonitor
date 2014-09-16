@@ -16,9 +16,9 @@ public class MainModel {
 		Map<String, String> currentmap = new HashMap<String, String>();
 		DateFormat dft = new DateFormat();
 		currentmap = gfi.callgetInfo(Main.file);
-		if (map.get("ddd").equals(currentmap.get("ddd"))) {
-			Tray.icon.displayMessage("ファイルを監視中です\n", map.get("aaa")
-					+ "\n更新日時 : " + dft.dateFormat(map.get("ddd")),
+		if (map.get(FileInfoEnum.LastModifiedData.toString()).equals(currentmap.get(FileInfoEnum.LastModifiedData.toString()))) {
+			Tray.icon.displayMessage("ファイルを監視中です\n", map.get(FileInfoEnum.AbusolutePath.toString())
+					+ "\n更新日時 : " + dft.dateFormat(map.get(FileInfoEnum.LastModifiedData.toString())),
 					MessageType.INFO);
 
 		} else {
@@ -26,10 +26,10 @@ public class MainModel {
 			Tray.icon
 					.displayMessage(
 							"ファイルが変更されました",
-							map.get("aaa") + "\n変更前  : "
-									+ df.dateFormat(map.get("ddd"))
+							map.get(FileInfoEnum.AbusolutePath.toString()) + "\n変更前  : "
+									+ df.dateFormat(map.get(FileInfoEnum.LastModifiedData.toString()))
 									+ "\n変更後 :  "
-									+ df.dateFormat(currentmap.get("ddd")),
+									+ df.dateFormat(currentmap.get(FileInfoEnum.LastModifiedData.toString())),
 							MessageType.WARNING);
 		}
 
@@ -44,8 +44,8 @@ public class MainModel {
 
 		map = gfi.callgetInfo(Main.file);
 
-		Tray.icon.displayMessage("ファイル変更", "ファイル名:" + map.get("aaa")
-				+ "\n更新日時 : " + dft.dateFormat(map.get("ddd")),
+		Tray.icon.displayMessage("ファイル変更", "ファイル名:" + map.get(FileInfoEnum.AbusolutePath.toString())
+				+ "\n更新日時 : " + dft.dateFormat(map.get(FileInfoEnum.LastModifiedData.toString())),
 				MessageType.INFO);
 	}
 
@@ -54,14 +54,14 @@ public class MainModel {
 		map = gfi.callgetInfo(Main.file);
 		DateFormat dft = new DateFormat();
 		Tray.icon.displayMessage("リセット",
-				"更新日時" + dft.dateFormat(map.get("ddd")), MessageType.INFO);
+				"更新日時" + dft.dateFormat(map.get(FileInfoEnum.LastModifiedData.toString())), MessageType.INFO);
 	}
 
 	public void openDir() {
 		getFileInfo gfi = new getFileInfo();
 		map = gfi.callgetInfo(Main.file);
 		execCommand ec = new execCommand();
-		ec.exec(map.get("aaa"));
+		ec.exec(map.get(FileInfoEnum.AbusolutePath.toString()));
 	}
 
 	public void exitAction() {
